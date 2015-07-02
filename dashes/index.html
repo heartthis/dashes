@@ -1,0 +1,470 @@
+<html>
+    <head>
+        <!-- git cachebreak -->
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
+
+        <!-- Optional theme -->
+        <!--<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap-theme.min.css">-->
+
+        <link type="text/css" rel="stylesheet" href="css/rickshaw.min.css" />
+
+        <link type="text/css" rel="stylesheet" href="css/stats.css" />
+        <link type="text/css" href="//www.heartthis.com/slickgrid/slick.grid.css" rel="stylesheet" />
+        <link type="text/css" href="//www.heartthis.com/slickgrid/css/smoothness/jquery-ui-1.8.16.custom.css" rel="stylesheet" />
+        <link type="text/css" href="//www.heartthis.com/slickgrid/slick-default-theme.css" rel="stylesheet" />
+
+        <meta name="viewport" id="view-port" content="width=device-width, user-scalable=no">
+    </head>
+    <body>
+        <div class="main-content">
+            <div class="user-panel" style="display:none">
+                <a class="login-link" href="#">Log in</a>
+                <span class="logged-in-as">Logged in as: <span class="user-name"></span></span> <a class="logout-link" href="#">Log out</a>
+            </div>
+            <div class="left-col">
+                <div class = "left-col-content-contain">
+                    <div class="left-col-content">
+                        <div class="nav-contain">
+                            <ul class="nav nav-pills">
+                                <li class="active"><a href="#" data-nav="search" >Search</a></li>
+                                <li><a href="#" data-nav="events" >Events</a></li>
+                                <li><a href="#" data-nav="charts" >Charts</a></li>
+                                <li><a href="#" data-nav="dashes" >Dashes</a></li>
+                            </ul>
+                        </div>
+
+                        <!-- search panel -->
+                        <div class="left-col-contain search">
+                            <table class="easy-stat-input-table" cellpadding="0" cellspacing="0">
+                                <tr>
+                                    <td style="position:relative;" width="100%">
+                                        <input class="form-control easy-stat-search-input" type="text" placeholder="Enter event name, * is wild"></input>
+                                        <div class="search-loader"></div>
+                                    </td>
+                                    <td width="82" class="smallScreenOnly">
+                                        <button class="btn btn-default easy-select-stat-btn" disabled>Select &rArr;</button>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <div class="result-button-contain row">
+                                <div class="col-xs-4">
+                                    <button class="btn btn-select-all btn-blue" disabled="disabled">Select All</button>
+                                </div>
+                                <div class="col-xs-5">
+                                    <button class="btn btn-unselect-all btn-red" disabled="disabled">Unselect All</button>
+                                </div>
+                                <div class="col-xs-3">
+                                    <button class="btn btn-stat btn-green">+ Stat</button>
+                                </div>
+                            </div>
+
+                            <div class="easy-stat-search-result-set">
+
+                            </div>
+                        </div>
+
+                        <!-- events panel -->
+                        <div class="left-col-contain events" style="display:none">
+                            <div class="stat-search-input-contain">
+                                <table class="stat-input-table" cellpadding="0" cellspacing="0">
+                                    <tr>
+                                       <td width="100%">
+                                            <input class="form-control stat-search-input" type="text" placeholder="Enter event name, * is wild"></input>
+                                       </td>
+                                        <td width="82" class="smallScreenOnly">
+                                            <button class="btn btn-default select-stat-btn" disabled>Select &rArr;</button>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <div class="typeahead-result-set"></div>
+                            </div>
+                            <div class="result-button-contain row">
+                                <div class="col-xs-4">
+                                    <button class="btn btn-select-all btn-blue" disabled="disabled">Select All</button>
+                                </div>
+                                <div class="col-xs-5">
+                                    <button class="btn btn-unselect-all btn-red" disabled="disabled">Unselect All</button>
+                                </div>
+                                <div class="col-xs-3">
+                                    <button class="btn btn-stat btn-green">+ Stat</button>
+                                </div>
+                            </div>
+                            <div class="stat-search-result-set">
+
+                            </div>
+
+                        </div>
+
+                        <!-- chart panel -->
+                        <div class="left-col-contain charts" style="display:none">
+                            <div class="chart-users">
+
+                            </div>
+                        </div>
+
+                        <!-- dashes panel -->
+                        <div class="left-col-contain dashes" style="display:none">
+                            <div class="dashboard-result-set vertical-toggle-menu">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="left-col-grabber largeScreenOnly">
+                    <div class="easy-grabber">
+                    </div>
+                </div>
+            </div>
+            <div class="right-col">
+                <div class="right-col-inner">
+                    <div class="right-col-header">
+                        <button class="btn btn-default back-btn smallScreenOnly">&lArr; Back</button>
+                        <div class="dashboard-header" style="display: none;">
+                            <h1 class="dashboard-title"></h1>
+                            <div class="dashboard-options dropdown">
+                                <a class="options-link dropdown-toggle" data-toggle="dropdown" href="#" > <span class="caret caret-large"></span></a>
+                                <ul class="dropdown-menu options-menu" role="menu">
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- templates used in javascript -->
+
+        <div class="chart-wrapper template">
+            <h2 class="chart-title" style="display:none;"></h2>
+            <div class="chart-contain">
+                <nav class="navbar" role="navigation">
+                    <div class="date-selector navbar-left">
+                        <ul class="nav navbar-nav date-presets">
+                            <li><a href="#" data-hours="3">3h</a></li>
+                            <li class="active"><a href="#" data-hours="24">1d</a></li>
+                            <li><a href="#" data-hours="168">1w</a></li>
+                            <li><a href="#" data-hours="720">1m</a></li>
+                            <li><a href="#" data-hours="8760">1y</a></li>
+                        </ul>
+
+                        <div class="date-select">
+                            <div class="dropdown">
+                                <a class="date-link dropdown-toggle" data-toggle="dropdown" href="#" >Custom</a>
+                                <ul class="date-form-contain dropdown-menu" role="menu">
+                                    <li>
+                                        <form class="navbar-form">
+                                            <input class="form-control range-input range-input-start" type="datetime" placeholder="start"></input><input class="form-control range-input range-input-end" type="datetime" placeholder="end"></input>
+                                        </form>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <select class="interval-select" class="form-control">
+                            <option value="60">1 minute</option>
+                            <option value="600">10 minutes</option>
+                            <option selected="selected" value="3600">1 hour</option>
+                            <option value="86400">1 day</option>
+                            <option value="604800">1 week</option>
+                            <option value="2592000">1 month</option>
+                        </select>
+                        <div class="refresh-icon-contain"><img class="refresh-icon" src="img/refresh_icon.gif" height="16" width="16"/></div>
+                    </div>
+                    <div class="nav navbar-nav navbar-right options-contain">
+                        <div class="dropdown">
+                            <a class="options-link dropdown-toggle" data-toggle="dropdown" href="#" >Options <span class="caret"></span></a>
+                            <ul class="dropdown-menu options-menu" role="menu">
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+                <div class="error-message" style="display:none;"></div>
+                <div class="rickshaw-components">
+                    <div class="axis-contain">
+                        <div class="y-axis"></div>
+                        <div class="chart"></div>
+                    </div>
+
+                    <div class="legend pull-left"></div>
+                    <div class="graphMode pull-right">
+                        <div class="modeSelect">
+                            <a href="#" class="selected" data-mode="line" data-mode-group="display"><img src="img/interp_linear.png"/><span>Line</span></a>
+                        </div><div class="modeSelect">
+                            <a href="#" data-mode="stack" data-mode-group="display"><img src="img/offset_stack.png"/><span>Stack</span></a>
+                        </div>
+
+                        <div class="func-select-contain">
+                            <select class="func-select" class="form-control">
+                                <option selected="selected" value="sum">Sum</option>
+                                <option value="avg">Avg.</option>
+                                <option value="min">Min</option>
+                                <option value="max">Max</option>
+                                <option value="last">Last</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div style="clear:both"></div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="search-result-item template">
+            <div class="checkbox">
+                    <input type="checkbox"> <a class="stat-link left-truncate"></a>
+            </div>
+        </div>
+
+        <div class="typeahead-result-item template">
+            <span class="typeahead-result-text left-truncate"></span>
+        </div>
+
+        <div class="chart-user-group template">
+            <a href="#" class="user-name-toggle"><span class="user-name"></span><span class="caret"></span></a>
+            <div class="chart-result-set vertical-toggle-menu" style="display:none">
+
+            </div>
+        </div>
+
+        <div class="chart-result-item template">
+            <a class="chart-link left-truncate"></a>
+        </div>
+
+        <div class="dashboard-result-item template">
+            <a class="dashboard-link left-truncate"></a>
+        </div>
+
+
+        <!-- end templates -->
+
+        <!--- start modals --->
+
+        <div class="modal save-dialog template" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">Save chart</h4>
+                    </div>
+                    <div class="modal-body">
+                        <h4>Enter a name for this chart:</h4>
+                        <input type="text" class="form-control chart-name-input" placeholder="Enter name"></input>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" data-dismiss="modal" class="btn btn-primary btn-save" disabled>Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal rename-dialog template" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">Rename chart</h4>
+                    </div>
+                    <div class="modal-body">
+                        <h4>Enter a new name for this chart:</h4>
+                        <input type="text" class="form-control chart-name-input" placeholder="Enter name"></input>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" data-dismiss="modal" class="btn btn-primary btn-rename" disabled>Update</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="modal add-to-dash-dialog template" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">Add to dash</h4>
+                    </div>
+                    <div class="modal-body">
+                        <h4>Select a dash to add this chart to:</h4>
+                        <div class="dashboard-selector vertical-toggle-menu">
+                        </div>
+                        <p class="or">or</p>
+                        <button type="button" data-dismiss="modal" class="btn btn-success btn-new-dash">Create new dash</button>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" data-dismiss="modal" class="btn btn-primary btn-add" disabled>Add to selected</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal new-dash-dialog template" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">Create dash</h4>
+                    </div>
+                    <div class="modal-body">
+                        <h4>Enter a name for this dash:</h4>
+                        <input type="text" class="form-control dash-name-input" placeholder="Enter name"></input>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" data-dismiss="modal" class="btn btn-primary btn-save" disabled>Create</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal rename-dash-dialog template" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">Rename dash</h4>
+                    </div>
+                    <div class="modal-body">
+                        <h4>Enter a new name for this dash:</h4>
+                        <input type="text" class="form-control dash-name-input" placeholder="Enter name"></input>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" data-dismiss="modal" class="btn btn-primary btn-rename" disabled>Update</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal delete-confirm template" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">Delete chart</h4>
+                    </div>
+                    <div class="modal-body">
+                        <h1>Are you sure you want to delete this chart?</h1>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" data-dismiss="modal" class="btn btn-default">Don't do it</button>
+                        <button type="button" data-dismiss="modal" class="btn btn-danger btn-delete">Delete</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal delete-dash-confirm template" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">Delete dash</h4>
+                    </div>
+                    <div class="modal-body">
+                        <h1>Are you sure you want to delete this dash?</h1>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" data-dismiss="modal" class="btn btn-default">Don't do it</button>
+                        <button type="button" data-dismiss="modal" class="btn btn-danger btn-delete">Delete</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal remove-confirm template" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">Remove chart from dash</h4>
+                    </div>
+                    <div class="modal-body">
+                        <h1>Are you sure you want to remove this chart from this dash?</h1>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" data-dismiss="modal" class="btn btn-default">Don't do it</button>
+                        <button type="button" data-dismiss="modal" class="btn btn-danger btn-remove">Remove</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal create-stat-modal template" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">Create a new stat</h4>
+                    </div>
+                    <div class="modal-body">
+                        <h3>Selected Events</h3>
+                        <div class="define-variables">
+                            <div class="variable-row template"><span class="variable-name"></span><span class="event-selector  left-truncate"></span></div>
+                        </div>
+                        <h3>Write an equation</h3>
+                        <div>
+                            <div>Examples: <br/><span class="equation-hint">sumSeries($1,$2,...), diffSeries($1,$2,...), multiplySeries($1,$2,...), divideSeries($1,$2), scale($1,const), offset($2,const)
+                                <a href="http://graphite.readthedocs.org/en/1.0/functions.html" style="display:inline-block;" target="_blank">[full documentation]</a></span>
+                            </div>
+                            <textarea class="form-control equation-input"></textarea>
+                        </div>
+
+                        <h3>Name the stat</h3>
+                        <input type="text" class="form-control stat-name"></input>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" data-dismiss="modal" class="btn btn-default btn-save-stat">Save Stat</button>
+                        <button type="button" data-dismiss="modal" class="btn btn-danger btn-remove">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- end modals -->
+
+
+
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
+        <!-- Latest compiled and minified JavaScript -->
+        <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+
+        <script type="text/javascript" src="js/d3.v3.js"></script>
+        <script type="text/javascript" src="js/spin.min.js"></script>
+        <script type="text/javascript" src="js/jquery.spin.js"></script>
+        <script type="text/javascript" src="js/rickshaw.js"></script>
+        <script type="text/javascript" src="js/config.js" ></script>
+        <script type="text/javascript" src="js/utils.js" ></script>
+        <script type="text/javascript" src="js/graphite.js" ></script>
+        <script type="text/javascript" src="js/chart.js" ></script>
+        <script type="text/javascript" src="js/dash.js" ></script>
+        <script type="text/javascript" src="js/stats.js" ></script>
+        <script type="text/javascript" src="js/FileSaver.js" ></script>
+
+
+
+
+        <script src="//www.heartthis.com/slickgrid/lib/jquery-1.7.min.js"></script>
+        <script src="//www.heartthis.com//slickgrid/lib/jquery.event.drag-2.2.js"></script>
+        <script src="//www.heartthis.com//slickgrid/lib/jquery-ui-1.8.16.custom.min.js"></script>
+        <script src="//www.heartthis.com//slickgrid/slick.core.js"></script>
+        <script src="//www.heartthis.com//slickgrid/plugins/slick.autotooltips.js"></script>
+        <script src="//www.heartthis.com//slickgrid/plugins/slick.cellrangedecorator.js"></script>
+        <script src="//www.heartthis.com//slickgrid/plugins/slick.cellrangeselector.js"></script>
+        <script src="//www.heartthis.com//slickgrid/plugins/slick.cellexternalcopymanager.js"></script>
+        <script src="//www.heartthis.com//slickgrid/plugins/slick.cellselectionmodel.js"></script>
+        <script src="//www.heartthis.com//slickgrid/plugins/slick.checkboxselectcolumn.js"></script>
+        <script src="//www.heartthis.com//slickgrid/controls/slick.columnpicker.js"></script>
+        <script src="//www.heartthis.com//slickgrid/slick.grid.js"></script>
+
+        <script type="text/javascript">
+            $(function(){
+                Stats.init();
+            });
+        </script>
+
+    </body>
+</html>
